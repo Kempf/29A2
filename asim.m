@@ -1,8 +1,7 @@
 function [ avg ] = asim( tmax, r1, r2, r3 )
 % ASIM Intersection simulation
-%   nP - length of simulation in cycles
+%   tmax - length of simulation in seconds
 %   r1-3 - length of release on stations 1-3
-%   seq - sequence 1 2 3 or 1 3 2
 
     % Release pattern
     CP1 = [ones(1,r1) zeros(1,60+r2+r3)];
@@ -12,12 +11,9 @@ function [ avg ] = asim( tmax, r1, r2, r3 )
     % Sanity check
     if (tmax < 1)
         error('Incorrect simulation length.');
-    elseif (and(not(all(size(CP1) == size(CP2))),not(all(size(CP2) == size(CP3)))))
-        error('Release pattern lenghts do not match.');
-    elseif (any(CP1 .* CP2 .* CP3))
-        error ('Incorrect patterns.');
     end
-
+    
+    % No. of pattern repeats
     nP = ceil(tmax/size(CP1,2));
     
     % Release cycle
@@ -37,23 +33,23 @@ function [ avg ] = asim( tmax, r1, r2, r3 )
     Q3 = [];
     QD = [];
 
-    % Vehicle counter
-    veh = 1;
+    % Package counter
+    pak = 1;
     
     % Main loop
     for t = 1:tmax
         % Add packages to station queues
         if(W1(t) && size(Q1,1) < 50 && not(C1(t)))
-            Q1 = [Q1; [veh 1]];
-            veh = veh + 1;
+            Q1 = [Q1; [pak 1]];
+            pak = pak + 1;
         end
         if(W2(t) && size(Q2,1) < 50 && not(C2(t)))
-            Q2 = [Q2; [veh 2]];
-            veh = veh + 1;
+            Q2 = [Q2; [pak 2]];
+            pak = pak + 1;
         end
         if(W3(t) && size(Q3,1) < 50 && not(C3(t)))
-            Q3 = [Q3; [veh 3]];
-            veh = veh + 1;
+            Q3 = [Q3; [pak 3]];
+            pak = pak + 1;
         end
         % Release packages to main queue
         if(not(isempty(Q1)) && C1(t) && size(QM,1) < 155)
@@ -75,7 +71,7 @@ function [ avg ] = asim( tmax, r1, r2, r3 )
         end
     end
     
-   % Analysis
+   % Calculate avergae hourly throughput
     avg = size(QD,1)/(tmax/3600);
     
 end
