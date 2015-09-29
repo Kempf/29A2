@@ -12,9 +12,9 @@ function [ m1, m2, m3, mtp ] = osim( tmax, til, run )
     end
     % Optimization loop
     for n = 1:run
-        for r1 = 1:til:100
-            for r2 = 1:til:100
-                for r3 = 1:til:100
+        for r1 = 5:til:100
+            for r2 = 5:til:100
+                for r3 = 5:til:100
                     % Progress output
                     rem = repmat('\b',1,length(str));
                     str = [num2str(r1) ':' num2str(r2) ':' num2str(r3)];
