@@ -1,6 +1,6 @@
 tiling = 5;
 
-[ m1, m2, m3, mtp, awt] = osim( 1000, tiling, 1 );
+[ m1, m2, m3, mtp, awt] = osim( 100, tiling, 1 );
 
 shrunk = zeros(100/tiling);
 
@@ -12,17 +12,25 @@ for countx = tiling:tiling:100
     end
 end
 
+%This may be along lines of what's needed...
+% [mstp,isnd] = max(shrunk(:));
+% [ms1, ms2, ms3] = ind2sub(size(shrunk),isnd);
+% 
+% 
+% xslice = [ms1 * tiling + 1 - tiling];  %#ok<*NBRAK>
+% yslice = [ms2 * tiling + 1 - tiling]; %yslice = [tiling, m2]; If extra panes desired
+% zslice = [ms3 * tiling + 1 - tiling];
 
 xslice = [m1];  %#ok<*NBRAK>
 yslice = [m2]; %yslice = [tiling, m2]; If extra panes desired
 zslice = [m3];
 
-x = tiling:tiling:100;
-y = tiling:tiling:100;
-z = tiling:tiling:100;
+x = 1:tiling:100;
+y = 1:tiling:100;
+z = 1:tiling:100;
 
 slice(x, y, z, shrunk, xslice, yslice, zslice)    % display the slices
-ylim([-5 105])
+ylim([0 105])
 view(135, 45)
 xlabel('r1');
 ylabel('r2');
