@@ -1,4 +1,4 @@
-function [ m1, m2, m3, mtp, awt] = osim( tmax, til, run )
+function [ m1, m2, m3, mtp, awt ] = osim( tmax, til, run )
 %OSIM Packaging optimization
 %   tmax - simulation time
 %   til - tiling in seconds
@@ -10,11 +10,14 @@ function [ m1, m2, m3, mtp, awt] = osim( tmax, til, run )
     if (run < 1)
         error('Incorrect number of runs.');
     end
+    if (til<=0 || round(til)~=til )
+        error('Incorrect tiling.');
+    end
     % Optimization loop
     for n = 1:run
-        for r1 = 5:til:100
-            for r2 = 5:til:100
-                for r3 = 5:til:100
+        for r1 = til:til:100
+            for r2 = til:til:100
+                for r3 = til:til:100
                     % Progress output
                     rem = repmat('\b',1,length(str));
                     str = [num2str(r1) ':' num2str(r2) ':' num2str(r3)];
