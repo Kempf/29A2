@@ -1,4 +1,4 @@
-function [ m1, m2, m3, mtp ] = osim( tmax, til, run )
+function [ m1, m2, m3, mtp, awt] = osim( tmax, til, run )
 %OSIM Packaging optimization
 %   tmax - simulation time
 %   til - tiling in seconds
@@ -36,4 +36,3 @@ function [ m1, m2, m3, mtp ] = osim( tmax, til, run )
     [m1, m2, m3] = ind2sub(size(awt),ind);
     fprintf('\nMaximum output: %.2f\n\tm1\t%d\n\tm2\t%d\n\tm3\t%d\n',mtp,m1,m2,m3);
 end
-
