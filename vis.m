@@ -45,8 +45,8 @@ function [] = vis (str, til, xslice, yslice, zslice)
     for ng = 1:1:100
         cg = awt(:,:,:,ng);
         ag(ng) = (nansum(cg(:))/sum(~isnan(cg(:))));
-        [max,~] = max(cg(:));
-        mg(ng) = max;
+        [mx,~] = max(cg(:));
+        mg(ng) = mx;
     end
     
     sg = 30:30:3000;
