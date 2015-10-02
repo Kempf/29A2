@@ -18,10 +18,12 @@ function [ m1, m2, m3, mtp, awt ] = osim( tmax, til, run )
         for r1 = til:til:100
             for r2 = til:til:100
                 for r3 = til:til:100
-                    % Progress output
-                    rem = repmat('\b',1,length(str));
-                    str = [num2str(r1) ':' num2str(r2) ':' num2str(r3)];
-                    fprintf([rem str]);
+                    if (r3==til)
+                        % Progress output
+                        rem = repmat('\b',1,length(str));
+                        str = [num2str(n) ':' num2str(r1) ':' num2str(r2) ':' num2str(r3)];
+                        fprintf([rem str]);
+                    end
                     % Run the sim
                     if (n==1)
                         awt(r1,r2,r3) = asim(tmax, r1, r2, r3);
@@ -69,7 +71,8 @@ function [ m1, m2, m3, mtp, awt ] = osim( tmax, til, run )
     xlabel('r1');
     ylabel('r2');
     zlabel('r3');
-    title(mtp);
+    title(['Average package throughput, r1_{max}= ' num2str(m1)...
+        ', r2_{max}= ' num2str(m2) ', r3_{max}= ' num2str(m3)', ' num2str(run) ', runs']);
     
     % Create and label the colorbar
     cb = colorbar;
