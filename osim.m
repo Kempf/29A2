@@ -44,5 +44,5 @@ function [ m1, m2, m3, mtp, awt ] = osim( tmax, til, run )
     fprintf('\nMaximum output: %.2f\n\tm1\t%d\n\tm2\t%d\n\tm3\t%d\n\tg\t%d\n\n',mtp,m1,m2,m3,mg);
     
     % Save results
-    save('awt');
+    save('awt',awt);
 end
