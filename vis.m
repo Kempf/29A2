@@ -44,13 +44,19 @@ function [] = vis (str, til, xslice, yslice, zslice)
     
     for ng = 1:1:100
         cg = awt(:,:,:,ng);
-        mg(ng) = (nansum(cg(:))/sum(~isnan(cg(:))));
+        ag(ng) = (nansum(cg(:))/sum(~isnan(cg(:))));
+        [max,~] = max(cg(:));
+        mg(ng) = max;
     end
     
     sg = 30:30:3000;
     figure;
+    plot(sg,ag);
+    xlabel('Gap time, sec');
+    ylabel('Average throughput');
+    
     plot(sg,mg);
     xlabel('Gap time, sec');
-    ylabel('AVG throughput');
-    title('Titties!');
+    ylabel('Maximum throughput');
+    
 end
