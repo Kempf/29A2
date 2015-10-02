@@ -33,13 +33,14 @@ function [] = vis (str, til, xslice, yslice, zslice)
     xlabel('r1');
     ylabel('r2');
     zlabel('r3');
-    title(['Average package throughput, r1_{max}= ' num2str(m1)...
+    title(['Max package throughput = ' num2str(mtp) ', r1_{max}= ' num2str(m1)...
         ', r2_{max}= ' num2str(m2) ', r3_{max}= ' num2str(m3) ', g_{max}= ' num2str(g*30)]);
     
     % Create and label the colorbar
     cb = colorbar;
     cb.Label.String = 'Packages per hour';
     
+    % Plot gap trends
     mg = NaN(100,1);
     
     for ng = 1:1:100
@@ -51,10 +52,11 @@ function [] = vis (str, til, xslice, yslice, zslice)
     
     sg = 30:30:3000;
     figure;
+    subplot(2,1,1);
     plot(sg,ag);
     xlabel('Gap time, sec');
     ylabel('Average throughput');
-    
+    subplot(2,1,2);
     plot(sg,mg);
     xlabel('Gap time, sec');
     ylabel('Maximum throughput');
