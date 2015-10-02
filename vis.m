@@ -4,7 +4,8 @@ function [] = vis (str, til, xslice, yslice, zslice)
 
     % Load results
     awt = load(str);
-
+    awt = awt.('awt');
+    
     [mtp,ind] = max(awt(:));
     [m1, m2, m3, g] = ind2sub(size(awt),ind);
     
@@ -33,7 +34,7 @@ function [] = vis (str, til, xslice, yslice, zslice)
     ylabel('r2');
     zlabel('r3');
     title(['Average package throughput, r1_{max}= ' num2str(m1)...
-        ', r2_{max}= ' num2str(m2) ', r3_{max}= ' num2str(m3)', ', g_{max}= ' num2str(g)]);
+        ', r2_{max}= ' num2str(m2) ', r3_{max}= ' num2str(m3) ', g_{max}= ' num2str(g*30)]);
     
     % Create and label the colorbar
     cb = colorbar;
@@ -41,9 +42,15 @@ function [] = vis (str, til, xslice, yslice, zslice)
     
     mg = NaN(100,1);
     
-    for ng = 1:100
-        mg(ng)=sum(awt(:,:,:,ng))./size(awt,1);
+    for ng = 1:1:100
+        cg = awt(:,:,:,ng);
+        mg(ng) = (nansum(cg(:))/sum(~isnan(cg(:))));
     end
     
+    sg = 30:30:3000;
     figure;
+    plot(sg,mg);
+    xlabel('Gap time, sec');
+    ylabel('AVG throughput');
+    title('Titties!');
 end
