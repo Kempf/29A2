@@ -1,16 +1,19 @@
-function [ avg ] = asim( tmax, r1, r2, r3 )
+function [ avg ] = asim( tmax, r1, r2, r3, g )
 % ASIM Intersection simulation
 %   tmax - length of simulation in seconds
 %   r1-3 - length of release on stations 1-3
 
     % Release pattern
-    CP1 = [ones(1,r1) zeros(1,60+r2+r3)];
-    CP2 = [zeros(1,r1+20) ones(1,r2) zeros(1,40+r3)];
-    CP3 = [zeros(1,40+r1+r2) ones(1,r3) zeros(1,20)];
+    CP1 = [ones(1,r1) zeros(1,g*3+r2+r3)];
+    CP2 = [zeros(1,r1+g) ones(1,r2) zeros(1,g*2+r3)];
+    CP3 = [zeros(1,g*2+r1+r2) ones(1,r3) zeros(1,g)];
     
     % Sanity check
     if (tmax < 1)
         error('Incorrect simulation length.');
+    end
+    if (g < 20)
+        error('Gap is less than 20 sec.');
     end
     
     % No. of pattern repeats
