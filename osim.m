@@ -27,9 +27,9 @@ function [ m1, m2, m3, mtp, awt ] = osim( tmax, til, run )
                         end
                         % Run the sim
                         if (n==1)
-                            awt(r1,r2,r3,g) = asim(tmax, r1, r2, r3,g*30);
+                            awt(r1,r2,r3,g) = asim(tmax, r1, r2, r3,g*10+3000);
                         else
-                            awt(r1,r2,r3,g) = awt(r1,r2,r3,g) + asim(tmax, r1, r2, r3,g*30);
+                            awt(r1,r2,r3,g) = awt(r1,r2,r3,g) + asim(tmax, r1, r2, r3,g*10+3000);
                         end
                     end
                 end
@@ -44,5 +44,5 @@ function [ m1, m2, m3, mtp, awt ] = osim( tmax, til, run )
     fprintf('\nMaximum output: %.2f\n\tm1\t%d\n\tm2\t%d\n\tm3\t%d\n\tg\t%d\n\n',mtp,m1,m2,m3,mg);
     
     % Save results
-    save('awt',awt);
+    save('awt','awt');
 end

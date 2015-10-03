@@ -34,7 +34,7 @@ function [] = vis (str, til, xslice, yslice, zslice)
     ylabel('r2');
     zlabel('r3');
     title(['Max package throughput = ' num2str(mtp) ', r1_{max}= ' num2str(m1)...
-        ', r2_{max}= ' num2str(m2) ', r3_{max}= ' num2str(m3) ', g_{max}= ' num2str(g*30)]);
+        ', r2_{max}= ' num2str(m2) ', r3_{max}= ' num2str(m3) ', g_{max}= ' num2str(g*10+3000)]);
     
     % Create and label the colorbar
     cb = colorbar;
@@ -50,7 +50,8 @@ function [] = vis (str, til, xslice, yslice, zslice)
         mg(ng) = mx;
     end
     
-    sg = 30:30:3000;
+    sg = 3010:10:4000;
+    %sg = 30:30:3000;
     figure;
     subplot(2,1,1);
     plot(sg,ag);
