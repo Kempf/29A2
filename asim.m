@@ -1,25 +1,27 @@
 function [ avg ] = asim( tmax, r1, r2, r3, g )
-% ASIM Intersection simulation
+% ASIM Packaging factory simulation
 %   tmax - length of simulation in seconds
 %   r1-3 - length of release on stations 1-3
+%   g - length of pause between releases
 
-    % Release pattern
+    % Generate release patterns
     CP1 = [ones(1,r1) zeros(1,g*3+r2+r3)];
     CP2 = [zeros(1,r1+g) ones(1,r2) zeros(1,g*2+r3)];
     CP3 = [zeros(1,g*2+r1+r2) ones(1,r3) zeros(1,g)];
     
-    % Sanity check
+    % Input check
     if (tmax < 1)
         error('Incorrect simulation length.');
-    end
-    if (g < 20)
-        error('Gap is less than 20 sec.');
+    elseif (g < 20)
+        error('Release gap must be over 20 seconds.');
+    elseif (r1 < 0 || r2 < 0 || r3 < 0)
+        error('Incorrect release lengths.');
     end
     
-    % No. of pattern repeats
+    % Calculate no. of pattern repeats
     nP = ceil(tmax/size(CP1,2));
     
-    % Release cycle
+    % Generate release cycles
     C1 = repmat(CP1,1,floor(nP));
     C2 = repmat(CP2,1,floor(nP));
     C3 = repmat(CP3,1,floor(nP));
@@ -29,17 +31,17 @@ function [ avg ] = asim( tmax, r1, r2, r3, g )
     W2 = poissrnd(50/3600,1,tmax);
     W3 = poissrnd(50/3600,1,tmax);
     
-    % Queues
+    % Initialize conveyor queues
     QM = [];
     Q1 = [];
     Q2 = [];
     Q3 = [];
     QD = [];
 
-    % Package counter
+    % Initialize package counter
     pak = 1;
     
-    % Main loop
+    % Main simulation loop
     for t = 1:tmax
         % Add packages to station queues
         if(W1(t) && size(Q1,1) < 50 && not(C1(t)))
@@ -58,12 +60,10 @@ function [ avg ] = asim( tmax, r1, r2, r3, g )
         if(not(isempty(Q1)) && C1(t) && size(QM,1) < 155)
             QM = [QM; Q1(1,:)];
             Q1 = Q1(2:end,:);
-        end
-        if(not(isempty(Q2)) && C2(t) && size(QM,1) < 125)
+        elseif(not(isempty(Q2)) && C2(t) && size(QM,1) < 125)
             QM = [QM; Q2(1,:)];
             Q2 = Q2(2:end,:);
-        end
-        if(not(isempty(Q3)) && C3(t) && size(QM,1) < 100)
+        elseif(not(isempty(Q3)) && C3(t) && size(QM,1) < 100)
             QM = [QM; Q3(1,:)];
             Q3 = Q3(2:end,:);
         end
