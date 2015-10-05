@@ -1,4 +1,4 @@
-function [ avg ] = psim_2_electric_boogaloo( tmax, r1, r2, r3, g, reps )
+function [ avg, fail_1, fail_2, fail_3, prod_fail_1, prod_fail_2, prod_fail_3, remaining_packages ] = psim_2_electric_boogaloo( tmax, r1, r2, r3, g, reps )
 % ASIM Intersection simulation
 %   tmax - length of simulation in seconds
 %   r1-3 - length of release on stations 1-3
@@ -24,6 +24,13 @@ function [ avg ] = psim_2_electric_boogaloo( tmax, r1, r2, r3, g, reps )
     QD_avg = 0;
     H_avg = []; 
     
+    fail_1 = 0;
+    fail_2 = 0;
+    fail_3 = 0;
+    prod_fail_1 = 0;
+    prod_fail_2 = 0;
+    prod_fail_3 = 0;
+    
     for n = 1:reps
 
         % No. of pattern repeats
@@ -45,6 +52,7 @@ function [ avg ] = psim_2_electric_boogaloo( tmax, r1, r2, r3, g, reps )
         Q2 = [];
         Q3 = [];
         QD = [];
+        
 
 
         % Package counter
@@ -71,6 +79,26 @@ function [ avg ] = psim_2_electric_boogaloo( tmax, r1, r2, r3, g, reps )
                 pak = pak + 1;
             end
             % Release packages to main queue
+            if(size(QM,1) >= 155 && C1(t))
+                fail_1 = fail_1 + 1;
+            end
+            if(size(QM,1) >= 125 && C2(t))
+                fail_2 = fail_2 + 1;
+            end
+            if(size(QM,1) >= 100 && C3(t))                
+                fail_3 = fail_3 + 1;
+            end            
+            if size(Q1,2) >= 50 && w1(t) && not(C1(t))
+                prod_fail_1 = prod_fail_1 + 1;
+            end
+            if size(Q2,2) >= 50 && w2(t) && not(C2(t))
+                prod_fail_2 = prod_fail_2 + 1;
+            end
+            if size(Q3,2) >= 50 && w1(t) && not(C3(t))
+                prod_fail_3 = prod_fail_3 + 1;
+            end
+            
+            
             if(not(isempty(Q1)) && C1(t) && size(QM,1) < 155)
                 QM = [QM; Q1(1,:)];
                 Q1 = Q1(2:end,:);
@@ -125,6 +153,8 @@ function [ avg ] = psim_2_electric_boogaloo( tmax, r1, r2, r3, g, reps )
     legend('1', '2', '3', 'M', 'Location', 'SouthEast');
     
    % Calculate avergae hourly throughput
+   
+   fail_3 = fail_3 / reps;
     avg = QD_avg;
-    
+    remaining_packages = size(Q1, 1) + size(Q2, 1) + size(Q3, 1);
 end
